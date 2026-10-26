@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#090d19"/>
+      <stop offset=".62" stop-color="#101529"/>
+      <stop offset="1" stop-color="#081e24"/>
+    </linearGradient>
+    <radialGradient id="blueGlow" cx="0" cy="0" r="1" gradientTransform="matrix(600 270 -240 530 60 50)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3f66c8" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#3f66c8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="greenGlow" cx="0" cy="0" r="1" gradientTransform="matrix(440 240 -210 385 1130 550)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00c99a" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#00c99a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="brandStroke" x1="68" y1="48" x2="112" y2="94" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e9f3ff"/>
+      <stop offset="1" stop-color="#8df1cf"/>
+    </linearGradient>
+    <linearGradient id="panelBorder" x1="690" y1="102" x2="1103" y2="510" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5977bb" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#42d8b1" stop-opacity=".5"/>
+    </linearGradient>
+    <linearGradient id="selectedSlot" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2e6f84"/>
+      <stop offset="1" stop-color="#174c4c"/>
+    </linearGradient>
+    <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M34 0H0V34" fill="none" stroke="#91a4d3" stroke-opacity=".055" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#020611" flood-opacity=".45"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <rect width="1200" height="630" fill="url(#blueGlow)"/>
+  <rect width="1200" height="630" fill="url(#greenGlow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Brand -->
+  <g transform="translate(78 64)">
+    <rect width="58" height="58" rx="17" fill="#182b49" stroke="#7da5db" stroke-opacity=".4"/>
+    <path d="M13 18 25 42c2.5 5 6 5 8.5 0L45 18" fill="none" stroke="url(#brandStroke)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="45" cy="18" r="4.2" fill="#83edc9"/>
+    <text x="74" y="39" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="700" letter-spacing="-1.4" fill="#f5f7ff">Velora</text>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="80" y="170" width="215" height="32" rx="16" fill="#18283d" stroke="#314864"/>
+    <circle cx="98" cy="186" r="4" fill="#76e8c2"/>
+    <text x="111" y="191" font-size="12" font-weight="700" letter-spacing="1.5" fill="#b9d1e7">MADE FOR EVERYDAY BOOKINGS</text>
+
+    <text x="78" y="284" font-size="68" font-weight="750" letter-spacing="-3.5" fill="#ffffff">Book anything.</text>
+    <text x="80" y="346" font-size="43" font-weight="600" letter-spacing="-1.7" fill="#d6e5fb">Without the back-and-forth.</text>
+    <text x="82" y="397" font-size="19" font-weight="400" fill="#aebbd0">Find local services, compare time slots,</text>
+    <text x="82" y="425" font-size="19" font-weight="400" fill="#aebbd0">and manage every booking in one place.</text>
+
+    <g transform="translate(80 478)">
+      <rect width="140" height="42" rx="21" fill="#111c2c" stroke="#2d3c50"/>
+      <path d="M17 14h13M17 20h13M17 26h8" stroke="#9db6d8" stroke-width="1.7" stroke-linecap="round"/>
+      <text x="40" y="26" font-size="14" font-weight="600" fill="#d8e2f0">Appointments</text>
+      <rect x="151" width="130" height="42" rx="21" fill="#111c2c" stroke="#2d3c50"/>
+      <path d="M169 14h14v14h-14z M172 11v6 M180 11v6" fill="none" stroke="#8de8c6" stroke-width="1.5" stroke-linejoin="round"/>
+      <text x="192" y="26" font-size="14" font-weight="600" fill="#d8e2f0">Time slots</text>
+      <text x="0" y="70" font-size="11" fill="#7f91aa">*Availability depends on the connected service provider.</text>
+    </g>
+  </g>
+
+  <!-- Purpose-built product illustration: UI components, not a fabricated user photo or testimonial. -->
+  <g filter="url(#shadow)">
+    <rect x="674" y="94" width="450" height="438" rx="27" fill="#111a2b" stroke="url(#panelBorder)" stroke-width="1.5"/>
+    <path d="M702 95H1097" stroke="#ffffff" stroke-opacity=".07"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif">
+    <circle cx="708" cy="129" r="5" fill="#72e6bf"/>
+    <text x="724" y="134" font-size="11" font-weight="700" letter-spacing="1.6" fill="#8fa4c3">BOOK AN APPOINTMENT</text>
+    <path d="M1054 121h32" stroke="#53647d" stroke-width="2" stroke-linecap="round"/>
+    <path d="M1078 113l8 8-8 8" fill="none" stroke="#53647d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <text x="707" y="183" font-size="27" font-weight="650" letter-spacing="-.65" fill="#f4f7ff">Choose a time</text>
+    <text x="708" y="211" font-size="14" fill="#94a7c2">Your schedule, made simpler.</text>
+
+    <rect x="706" y="238" width="386" height="83" rx="16" fill="#17243a" stroke="#2a3c56"/>
+    <rect x="722" y="254" width="49" height="49" rx="13" fill="#213b53"/>
+    <path d="M735 268h23v21h-23z M740 264v8 M753 264v8 M735 276h23" fill="none" stroke="#8de8cb" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="787" y="268" font-size="15" font-weight="650" fill="#f1f5fc">Service appointment</text>
+    <text x="787" y="291" font-size="13" fill="#91a5c0">Choose a provider near you</text>
+    <rect x="1012" y="255" width="64" height="23" rx="11.5" fill="#163d3a" stroke="#29655b"/>
+    <text x="1044" y="270" text-anchor="middle" font-size="10" font-weight="700" fill="#8ef2c9">FLEXIBLE</text>
+
+    <text x="707" y="361" font-size="13" font-weight="650" fill="#aebdd1">AVAILABLE TIME SLOTS</text>
+    <rect x="706" y="379" width="116" height="53" rx="13" fill="url(#selectedSlot)" stroke="#71dfc1" stroke-width="1.4"/>
+    <text x="764" y="401" text-anchor="middle" font-size="15" font-weight="700" fill="#f4fffb">10:30 AM</text>
+    <text x="764" y="418" text-anchor="middle" font-size="10" font-weight="600" fill="#a3f4d8">SELECTED</text>
+    <rect x="836" y="379" width="116" height="53" rx="13" fill="#172238" stroke="#34455c"/>
+    <text x="894" y="410" text-anchor="middle" font-size="15" font-weight="600" fill="#c2cee0">11:15 AM</text>
+    <rect x="966" y="379" width="126" height="53" rx="13" fill="#172238" stroke="#34455c"/>
+    <text x="1029" y="410" text-anchor="middle" font-size="15" font-weight="600" fill="#c2cee0">12:00 PM</text>
+
+    <rect x="706" y="453" width="386" height="51" rx="14" fill="#48d9b0"/>
+    <text x="899" y="484" text-anchor="middle" font-size="15" font-weight="750" fill="#06231f">Continue to booking</text>
+    <path d="M1067 475h13m-5-5 5 5-5 5" fill="none" stroke="#06231f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

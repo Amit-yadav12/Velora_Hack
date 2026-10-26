@@ -1,0 +1,116 @@
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import supabase, { isDemoMode } from '../lib/supabase';
+import type { User } from '@supabase/supabase-js';
+
+interface Profile { id: string; email: string; full_name: string; role: string; }
+interface Ctx { user: User | null; profile: Profile | null; loading: boolean; role: string; signOut: () => Promise<void>; refresh: () => Promise<void>; }
+const AuthContext = createContext<Ctx>({ user: null, profile: null, loading: true, role: 'customer', signOut: async () => {}, refresh: async () => {} });
+
+const CACHE_KEY = 'velora-profile';
+const readCache = (): Profile | null => { try { const s = localStorage.getItem(CACHE_KEY); return s ? JSON.parse(s) : null; } catch { return null; } };
+const writeCache = (p: Profile | null) => {
+  try { if (p) localStorage.setItem(CACHE_KEY, JSON.stringify(p)); else localStorage.removeItem(CACHE_KEY); } catch { /* non-fatal */ }
+};
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+  // Guard against redirect loops / duplicate profile fetches.
+  const lastUid = useRef<string | null>(null);
+
+  const applyProfile = useCallback((p: Profile | null) => { setProfile(p); writeCache(p); }, []);
+
+  const loadProfile = useCallback(async (u: User | null) => {
+    if (!u) { applyProfile(null); return; }
+    // Only trust cache if it matches this exact user.
+    const cached = readCache();
+    // Local storage is a UI cache, never an authority for production roles.
+    // A modified/stale cache must not make a normal account look like an admin
+    // while the database request is pending or unavailable. Demo identities
+    // retain their isolated demo roles so the offline showcase remains usable.
+    const safeCached = cached && cached.id === u.id
+      ? (isDemoMode ? cached : { ...cached, role: 'customer' })
+      : null;
+    if (safeCached) applyProfile(safeCached);
+    try {
+      const { data } = await supabase.from('profiles').select('*').eq('id', u.id).single();
+      if (data) { applyProfile(data as Profile); return; }
+      const created: Profile = {
+        id: u.id, email: u.email || '',
+        full_name: u.user_metadata?.full_name || u.email?.split('@')[0] || 'Guest',
+        role: 'customer',
+      };
+      // Auto-create carries NO role — roles are granted server-side (demo
+      // provisioning / business registration). Writing role here would clobber
+      // a server grant on the next upsert and race the demo sign-in flow.
+      await supabase.from('profiles').upsert({ id: created.id, email: created.email, full_name: created.full_name });
+      applyProfile(created);
+    } catch (e) {
+      console.error('[auth] loadProfile failed:', e);
+      if (!safeCached) {
+        applyProfile({ id: u.id, email: u.email || '', full_name: u.email?.split('@')[0] || 'Guest', role: 'customer' });
+      }
+    }
+  }, [applyProfile]);
+
+  useEffect(() => {
+    let mounted = true;
+    const safety = setTimeout(() => { if (mounted) setLoading(false); }, 4000);
+
+    const init = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!mounted) return;
+      const u = session?.user ?? null;
+      lastUid.current = u?.id ?? null;
+      setUser(u);
+      await loadProfile(u);
+      if (mounted) { clearTimeout(safety); setLoading(false); }
+    };
+    init().catch((e) => { console.error('[auth] init failed:', e); if (mounted) { clearTimeout(safety); setLoading(false); } });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const u = session?.user ?? null;
+      // Ignore events that don't change the user (e.g. TOKEN_REFRESHED) to avoid loops.
+      if (u?.id === lastUid.current && event !== 'SIGNED_OUT') { setUser(u); return; }
+      lastUid.current = u?.id ?? null;
+      setUser(u);
+      if (u) {
+        setLoading(true);
+        void loadProfile(u).finally(() => {
+          if (mounted && lastUid.current === u.id) setLoading(false);
+        });
+      } else {
+        applyProfile(null);
+        setLoading(false);
+      }
+    });
+    return () => { mounted = false; clearTimeout(safety); subscription.unsubscribe(); };
+  }, [loadProfile, applyProfile]);
+
+  const signOut = async () => {
+    lastUid.current = null;
+    setUser(null); applyProfile(null);
+    try { await supabase.auth.signOut(); } catch (e) { console.error('[auth] signOut error:', e); }
+    try { Object.keys(localStorage).filter((k) => k.startsWith('sb-') || k.includes('supabase')).forEach((k) => localStorage.removeItem(k)); } catch { /* non-fatal */ }
+  };
+  // Race-proof refresh: re-read the live session (never the render-scope user,
+  // which can be a stale closure right after sign-in) and sync BOTH user and
+  // profile from it. This is what lets the one-click demo entry land directly
+  // on /admin instead of flashing through the customer app.
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const u = session?.user ?? null;
+      lastUid.current = u?.id ?? null;
+      setUser(u);
+      await loadProfile(u);
+    } finally {
+      setLoading(false);
+    }
+  }, [loadProfile]);
+
+  return <AuthContext.Provider value={{ user, profile, loading, role: profile?.role || 'customer', signOut, refresh }}>{children}</AuthContext.Provider>;
+}
+export const useAuth = () => useContext(AuthContext);

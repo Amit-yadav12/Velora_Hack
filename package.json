@@ -1,0 +1,74 @@
+{
+  "name": "velora-ai-platform",
+  "private": true,
+  "version": "0.1.2",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "verify": "npm run verify:security && npm run verify:assets && npm run verify:recommendations && npm run verify:timezone && npm run sql:check && npm run verify:demo && npm run verify:integrations && npm run verify:app && npm run verify:site-origin",
+    "verify:demo": "tsx scripts/test-demo-engine.mjs && tsx scripts/verify-demo-auth.mjs",
+    "verify:integrations": "tsx scripts/verify-integrations.mjs",
+    "verify:app": "tsx scripts/verify-app.mjs",
+    "sql:bundle": "tsx scripts/build-sql.mjs",
+    "sql:check": "tsx scripts/build-sql.mjs --check",
+    "verify:security": "node scripts/verify-security-config.mjs",
+    "verify:assets": "node scripts/verify-assets.mjs",
+    "verify:recommendations": "node scripts/verify-match-score.mjs",
+    "verify:timezone": "node scripts/verify-timezone.mjs",
+    "verify:site-origin": "node scripts/verify-site-origin.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.99.1",
+    "@tailwindcss/vite": "^4.2.1",
+    "framer-motion": "^12.35.0",
+    "jspdf": "^4.2.1",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.577.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.1",
+    "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^24.13.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "jsdom": "^30.0.1",
+    "tsx": "^4.23.13",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vite": "^7.3.1"
+  },
+  "description": "Velora \u2014 India-first smart appointment booking and business operations platform (React, TypeScript, Supabase).",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amit-yadav12/Velora_12.git"
+  },
+  "homepage": "https://github.com/Amit-yadav12/Velora_12#readme",
+  "bugs": {
+    "url": "https://github.com/Amit-yadav12/Velora_12/issues"
+  },
+  "keywords": [
+    "appointment-booking",
+    "scheduling",
+    "local-services",
+    "react",
+    "typescript",
+    "supabase",
+    "india"
+  ]
+}

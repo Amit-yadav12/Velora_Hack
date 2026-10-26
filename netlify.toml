@@ -1,0 +1,53 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  # NOTE: values declared here OVERRIDE the same keys set in the Netlify UI
+  # (https://docs.netlify.com/build/environment-variables/overview/). The site
+  # origin is therefore deliberately NOT hardcoded: set APP_URL and
+  # VITE_APP_URL in the site's dashboard (Site configuration → Environment
+  # variables) so a new domain, a deploy preview or a custom domain all build
+  # with their own correct origin. Keep runtime aligned with .nvmrc and CI.
+  NODE_VERSION = "22.22.2"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@supabase/supabase-js"]
+
+# API adapter — all /api/* requests go to the single Netlify function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api-adapter/:splat"
+  status = 200
+  force = false
+
+# SPA fallback — everything else serves index.html (client routing)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Scheduled reminders — runs every 15 minutes
+[functions."process-reminders"]
+  schedule = "*/15 * * * *"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/biz/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

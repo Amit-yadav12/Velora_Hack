@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="description" content="Velora helps people discover local services, compare available appointment times, and manage bookings in one place." />
+    <meta name="keywords" content="appointment booking, book clinic, book salon, dentist appointment, gym booking, AI scheduling, Velora, India booking app, salon booking, doctor appointment, sports court booking, hotel booking" />
+    <meta name="author" content="Velora" />
+    <link rel="canonical" href="https://velora-ai-in.netlify.app/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Velora" />
+    <meta property="og:title" content="Velora — Book Anything, Instantly" />
+    <meta property="og:description" content="Find local services, compare time slots, and manage appointments in one place with Velora." />
+    <meta property="og:image" content="https://velora-ai-in.netlify.app/og-image.png" />
+    <meta property="og:url" content="https://velora-ai-in.netlify.app/" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Velora — Book Anything, Instantly" />
+    <meta name="twitter:description" content="Find local services, compare appointment times, and manage your bookings in one place." />
+    <meta name="twitter:image" content="https://velora-ai-in.netlify.app/og-image.png" />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Velora" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <title>Velora — Book Anything, Instantly</title>
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Velora",
+        "description": "Discover local services, compare available appointment times, and manage bookings in one place.",
+        "url": "https://velora-ai-in.netlify.app/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+      }
+    </script>
+
+    <script>
+      // Deployment-agnostic SEO/social URLs. The build stamps APP_URL when it
+      // is known; this keeps alias domains and deploy previews self-consistent
+      // (canonical + og:url + structured-data url follow the serving origin).
+      (function () {
+        try {
+          var o = location.origin;
+          if (!/^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)/i.test(o)) {
+            var canon = document.querySelector('link[rel="canonical"]');
+            if (canon) canon.setAttribute('href', o + '/');
+            var og = document.querySelector('meta[property="og:url"]');
+            if (og) og.setAttribute('content', o + '/');
+            var ld = document.querySelector('script[type="application/ld+json"]');
+            if (ld && ld.textContent) {
+              var d = JSON.parse(ld.textContent);
+              d.url = o + '/';
+              ld.textContent = JSON.stringify(d);
+            }
+          }
+        } catch (e) { /* non-fatal */ }
+      })();
+    </script>
+    <script>
+      // SW recovery kill-switch: if an old cache-first service worker is
+      // serving a stale build (broken assets), clear caches + reload once.
+      (function () {
+        try {
+          if ('serviceWorker' in navigator && 'caches' in window) {
+            var KEY = '__velora_sw_recovered';
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              caches.keys().then(function (keys) {
+                var stale = keys.filter(function (k) { return k !== 'velora-v3'; });
+                var recovered = false;
+                try { recovered = !!sessionStorage.getItem(KEY); } catch (e) { recovered = true; }
+                if (stale.length && !recovered) {
+                  try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+                  Promise.all([
+                    Promise.all(stale.map(function (k) { return caches.delete(k); })),
+                    Promise.all(regs.map(function (r) { return r.unregister(); }))
+                  ]).then(function () { window.location.reload(); });
+                }
+              }).catch(function () {});
+            }).catch(function () {});
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <div id="velora-boot" style="min-height:100vh;display:grid;place-items:center;background:#05060a;color:#f5f7fb;font-family:Inter,system-ui,sans-serif">
+        <div style="text-align:center;padding:24px">
+          <img src="/icon-192.png" alt="" width="52" height="52" style="display:block;border-radius:16px;margin:0 auto 16px" />
+          <div id="velora-boot-msg" style="font-size:14px;color:#9aa3b5">Loading Velora…</div>
+          <div id="velora-boot-err" style="display:none;max-width:420px;margin:14px auto 0;font-size:12px;color:#f87171;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);padding:10px 12px;border-radius:10px;text-align:left;white-space:pre-wrap;word-break:break-word"></div>
+          <button id="velora-boot-retry" onclick="window.location.reload()" style="display:none;margin:14px auto 0;background:linear-gradient(100deg,#3b82f6,#6366f1);color:#fff;border:0;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer">Reload Velora</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Boot watchdog: React clears #velora-boot on first render. If anything
+      // fails before that (blocked resources, cached broken build), show the
+      // real error instead of a black screen.
+      (function () {
+        function show(msg) {
+          try {
+            var m = document.getElementById('velora-boot-msg');
+            var e = document.getElementById('velora-boot-err');
+            var b = document.getElementById('velora-boot-retry');
+            if (m) m.textContent = 'Velora could not start.';
+            if (e) { e.style.display = 'block'; e.textContent = String(msg || 'Unknown boot error'); }
+            if (b) b.style.display = 'block';
+          } catch (_) {}
+        }
+        window.addEventListener('error', function (ev) {
+          if (window.__veloraBooted) return;
+          show((ev && ev.message) || 'A resource failed to load. Check your connection and reload.');
+        }, true);
+        window.addEventListener('unhandledrejection', function (ev) {
+          if (window.__veloraBooted) return;
+          var r = ev && ev.reason;
+          show((r && (r.message || r)) || 'Something failed while starting.');
+        });
+        setTimeout(function () {
+          if (!window.__veloraBooted && document.getElementById('velora-boot')) {
+            var m = document.getElementById('velora-boot-msg');
+            if (m) m.textContent = 'Still loading… if this persists, reload the page.';
+            var b = document.getElementById('velora-boot-retry');
+            if (b) b.style.display = 'block';
+          }
+        }, 15000);
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

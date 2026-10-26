@@ -1,0 +1,73 @@
+# Velora CI — runs on pushes and pull requests.
+# Verifies: lint (errors fail), typecheck + production build, SQL bundle drift,
+# the demo engine, the server-side integration suite, and the full app/API
+# harness (real App.tsx + real /api handlers under jsdom).
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.2
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck + production build
+        run: npm run build
+
+      - name: Security/configuration regression checks
+        run: npm run verify:security
+
+      - name: Brand and metadata assets
+        run: npm run verify:assets
+
+      - name: Deployment-origin SEO asset checks
+        run: npm run verify:site-origin
+
+      - name: SQL bundle in sync with migrations
+        run: npm run sql:check
+
+      - name: Explainable recommendation regression checks
+        run: npm run verify:recommendations
+
+      - name: Timezone regression checks (UTC)
+        run: npm run verify:timezone
+        env:
+          TZ: UTC
+
+      - name: Timezone regression checks (US Pacific)
+        run: npm run verify:timezone
+        env:
+          TZ: America/Los_Angeles
+
+      - name: Timezone regression checks (Asia/Kolkata)
+        run: npm run verify:timezone
+        env:
+          TZ: Asia/Kolkata
+
+      - name: Demo engine tests
+        run: npm run verify:demo
+
+      - name: Integration suite (calendar OAuth, email, QR, IST, booking guards)
+        run: npm run verify:integrations
+
+      - name: Full app + API harness
+        run: npm run verify:app
